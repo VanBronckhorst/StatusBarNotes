@@ -10,6 +10,7 @@ import Cocoa
 
 let kStoryboardId : String = "ClipboardViewController"
 let kEmptyStateString = "0/0"
+let kTimerInterval = 10.0
 
 class ClipboardViewController: NSViewController {
 
@@ -55,9 +56,10 @@ class ClipboardViewController: NSViewController {
     }
   }
 
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(checkForClipboardContent), userInfo: nil, repeats: true)
+    Timer.scheduledTimer(timeInterval: kTimerInterval, target: self, selector: #selector(checkForClipboardContent), userInfo: nil, repeats: true)
 
   }
 
@@ -100,8 +102,9 @@ class ClipboardViewController: NSViewController {
   }
 
   func processClipboardElement(element: NSPasteboardItem) -> String? {
-    if element.types.contains(.fileURL) {
-      if let data = element.data(forType: .fileURL) {
+    let fileURLType = NSPasteboard.PasteboardType(kUTTypeFileURL as String)
+    if element.types.contains(fileURLType) {
+      if let data = element.data(forType: fileURLType) {
         if let url = URL(dataRepresentation: data, relativeTo: nil) {
           return url.path
         }

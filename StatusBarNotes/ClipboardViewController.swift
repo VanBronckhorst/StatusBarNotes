@@ -15,8 +15,9 @@ let kTimerInterval = 10.0
 class ClipboardViewController: NSViewController {
 
   @IBOutlet weak var selectedHistoryLabel: NSTextField!
-  @IBOutlet weak var selectedHistoryTextView: NSTextView!
+  @IBOutlet var selectedHistoryTextView: NSTextView!
   @IBOutlet weak var nextItemButton: NSButton!
+  @IBOutlet weak var endItemButton: NSButton!
   @IBOutlet weak var previousItemButton: NSButton!
 
 
@@ -45,9 +46,13 @@ class ClipboardViewController: NSViewController {
   }
 
   @IBAction func nextItemButtonPressed(_ sender: Any) {
-    if (activeHistoryIndex + 1 < clipboardHistory.count) {
+    if (clipboardHistory + 1 < clipboardHistory.count) {
       activeHistoryIndex += 1
     }
+  }
+
+  @IBAction func endItemButtonPressed(_ sender: Any) {
+      activeHistoryIndex = clipboardHistory.count - 1
   }
 
   @IBAction func previousItemButtonPressed(_ sender: Any) {
@@ -137,6 +142,7 @@ class ClipboardViewController: NSViewController {
   func updateButtonsState() {
     previousItemButton.isEnabled = activeHistoryIndex > 0
     nextItemButton.isEnabled = (activeHistoryIndex + 1) < clipboardHistory.count
+    endItemButton.isEnabled = (activeHistoryIndex + 1) < clipboardHistory.count
   }
 }
 
